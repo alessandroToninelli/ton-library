@@ -18,3 +18,5 @@ tasks.withType<KotlinCompile>() {
 
 fun getBintrayUser(): String = project.findProperty("bintrayUser").toString()
 fun getBintrayApiKey(): String = project.findProperty("bintrayKey").toString()
+
+
