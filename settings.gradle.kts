@@ -1,0 +1,3 @@
+
+rootProject.name = "ton-library"
+
