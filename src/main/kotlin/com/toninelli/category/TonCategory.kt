@@ -5,8 +5,7 @@ import javax.management.monitor.StringMonitor
 
 data class TonCategory(
     val id: String,
-    val key: String,
     val name: String,
-    val parent: String,
+    val liv: Int,
     val nart: Int
 )

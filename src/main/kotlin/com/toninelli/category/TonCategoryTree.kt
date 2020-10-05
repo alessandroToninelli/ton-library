@@ -10,7 +10,7 @@ class TonCategoryTree constructor(private val list: List<TonCategory>) {
         var rightSibling: Node?
     )
 
-    private val root = Node(TonCategory("5", "00000000","root", "0",0), null, null, null)
+    private val root = Node(TonCategory("0000000000","root", 0, 0), null, null, null)
 
     init {
         populateTree(root,list.toMutableList())
@@ -18,8 +18,8 @@ class TonCategoryTree constructor(private val list: List<TonCategory>) {
 
     private fun populateTree(node: Node, mutableCategories: MutableList<TonCategory>) {
         val nodeId = node.data.id
-        val leftChild = mutableCategories.firstOrNull { it.parent == nodeId }
-        val rightSibling = mutableCategories.firstOrNull { it.parent == node.parent?.data?.id }
+        val leftChild = mutableCategories.firstOrNull { getParent(it.liv, it.id) == nodeId }
+        val rightSibling = mutableCategories.firstOrNull { getParent(it.liv, it.id) == node.parent?.data?.id }
         leftChild?.let {
             mutableCategories.remove(it)
             val newNode = Node(it, node, null, null)
@@ -32,6 +32,22 @@ class TonCategoryTree constructor(private val list: List<TonCategory>) {
             node.rightSibling = newNode
             populateTree(newNode, mutableCategories)
         }
+    }
+
+    private fun getParent(level: Int, codif: String): String {
+        val subString =  when (level) {
+            1 -> codif.substring(0, 0)
+            2 -> codif.substring(0, 2)
+            3 -> codif.substring(0, 4)
+            4 -> codif.substring(0, 6)
+            5 -> codif.substring(0,8)
+            else -> error("Level out of bound")
+        }
+
+        val nZeros = 10 - subString.length
+        val zeroString = "0".repeat(nZeros)
+        return "$subString$zeroString"
+
     }
 
     fun getSubCateg(id: String): List<TonCategory> {
