@@ -26,7 +26,6 @@ object CategoryParser {
     fun parse(list: List<TonServerCategory>): List<TonCategory> {
         val tonCategoryList = mutableListOf<TonCategory>()
         list.forEach {
-
             val idBuilder = StringBuilder()
 
             for(i in (1..it.ACDF2LIV)){

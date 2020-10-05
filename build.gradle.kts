@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.toninelli"
-version = "1.0.5"
+version = "1.2.3"
 
 repositories {
     mavenCentral()
@@ -29,18 +29,36 @@ tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-val sourceJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.getByName("main").allSource)
-}
+//val sourceJar by tasks.creating(Jar::class) {
+//    println("Ciao")
+//    archiveClassifier.set("sources")
+//    from(sourceSets.getByName("main").allSource)
+//}
 
 
 tasks {
+
+    register<Jar>("sourceJar") {
+        archiveClassifier.set("sources")
+        from(sourceSets.getByName("main").allSource)
+        doLast {
+            println("SOURCE JAR")
+        }
+    }
+
     dokka {
         outputFormat = "html"
         outputDirectory = "$buildDir/javadoc"
     }
+
+    bintrayUpload {
+        dependsOn("build")
+        dependsOn("sourceJar")
+        dependsOn("generateMetadataFileForDefaultPublication")
+        dependsOn("generatePomFileForDefaultPublication")
+    }
 }
+
 
 fun getBintrayUser(): String = project.findProperty("bintrayUser").toString()
 fun getBintrayApiKey(): String = project.findProperty("bintrayKey").toString()
@@ -53,7 +71,7 @@ publishing {
             groupId = project.group.toString()
             version = project.version.toString()
             from(components["java"])
-            artifact(sourceJar)
+            artifact(tasks["sourceJar"])
             pom {
                 name.set(rootProject.name)
                 url.set("https://github.com/alessandroToninelli/ton-library")
