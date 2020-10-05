@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.toninelli"
-version = "1.0.1"
+version = "1.0.5"
 
 repositories {
     mavenCentral()
@@ -53,7 +53,7 @@ publishing {
             groupId = project.group.toString()
             version = project.version.toString()
             from(components["java"])
-            artifact(tasks["sourceJar"])
+            artifact(sourceJar)
             pom {
                 name.set(rootProject.name)
                 url.set("https://github.com/alessandroToninelli/ton-library")
